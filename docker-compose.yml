@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  squid-proxy:
+    build: .
+    environment:
+      - PORT=${PORT}
+      - SQUID_USER=${SQUID_USER}
+      - SQUID_PASS=${SQUID_PASS}
+    image: docker-squid-proxy:latest
+    hostname: squid-proxy
+    container_name: squid-proxy
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "50"
+        tag: squid-proxy
+    volumes:
+      - ./var/cache:/var/spool/squid
+      - ./var/log:/var/log/squid
+    ports:
+      - ${PORT}:3128
